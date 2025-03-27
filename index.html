@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Digital Clock</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+      :root {
+        --primary-color: #2563eb;
+        --dark-color: #1e293b;
+        --light-color: #f8fafc;
+        --accent-color: #f59e0b;
+      }
+      
+      body {
+        font-family: 'Roboto', sans-serif;
+        background-color: var(--dark-color);
+        color: var(--light-color);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .clock-container {
+        background: rgba(30, 41, 59, 0.8);
+        border-radius: 16px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 2rem;
+        max-width: 600px;
+        margin: auto;
+      }
+      
+      .clock-display {
+        font-family: 'Orbitron', sans-serif;
+        font-weight: 700;
+        color: var(--accent-color);
+        text-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+        margin-bottom: 1rem;
+      }
+      
+      .time {
+        font-size: 4rem;
+        line-height: 1;
+      }
+      
+      .date {
+        font-size: 1.5rem;
+        opacity: 0.8;
+      }
+      
+      .clock-controls {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 2rem;
+      }
+      
+      .btn-clock {
+        background-color: var(--primary-color);
+        border: none;
+        border-radius: 50px;
+        padding: 0.5rem 1.5rem;
+        transition: all 0.3s ease;
+      }
+      
+      .btn-clock:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+      
+      footer {
+        margin-top: auto;
+        padding: 1rem;
+        text-align: center;
+        opacity: 0.7;
+        font-size: 0.9rem;
+      }
+      
+      @media (max-width: 576px) {
+        .time {
+          font-size: 3rem;
+        }
+        .date {
+          font-size: 1.2rem;
+        }
+      }
+    </style>
+    
+    <script>
+      let a;
+      let date;
+      let time;
+      const options = { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      };
+      
+      function updateClock() {
+        a = new Date();
+        date = a.toLocaleDateString(undefined, options);
+        time = formatTime(a.getHours()) + ':' + formatTime(a.getMinutes()) + ':' + formatTime(a.getSeconds());
+        document.getElementById('time').innerHTML = time;
+        document.getElementById('date').innerHTML = date;
+      }
+      
+      function formatTime(time) {
+        return time < 10 ? `0${time}` : time;
+      }
+      
+      setInterval(updateClock, 1000);
+      updateClock(); // Initial call
+    </script>
+  </head>
+  <body>
+    <div class="container py-5">
+      <div class="clock-container text-center py-4 px-3">
+        <h1 class="mb-4">Digital Clock</h1>
+        
+        <div class="clock-display">
+          <div id="time" class="time"></div>
+          <div id="date" class="date"></div>
+        </div>
+        
+        <div class="clock-controls mt-4">
+          <button class="btn btn-clock btn-primary" onclick="toggleFullscreen()">
+            Fullscreen
+          </button>
+          <button class="btn btn-clock btn-outline-light" onclick="changeTheme()">
+            Change Theme
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <footer>
+      <p>© 2025 Digital Clock | Designed with ❤️</p>
+    </footer>
+    
+    <script>
+      // Toggle fullscreen mode
+      function toggleFullscreen() {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(err => {
+            console.log(`Error attempting to enable fullscreen: ${err.message}`);
+          });
+        } else {
+          if (document.exitFullscreen) {
+            document.exitFullscreen();
+          }
+        }
+      }
+      
+      // Change theme colors
+      function changeTheme() {
+        const root = document.documentElement;
+        const currentColor = getComputedStyle(root).getPropertyValue('--primary-color').trim();
+        
+        if (currentColor === '#2563eb') {
+          root.style.setProperty('--primary-color', '#10b981');
+          root.style.setProperty('--accent-color', '#8b5cf6');
+        } else if (currentColor === '#10b981') {
+          root.style.setProperty('--primary-color', '#8b5cf6');
+          root.style.setProperty('--accent-color', '#ec4899');
+        } else {
+          root.style.setProperty('--primary-color', '#2563eb');
+          root.style.setProperty('--accent-color', '#f59e0b');
+        }
+      }
+    </script>
+    
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
